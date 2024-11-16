@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#87CEEB", "id": "BCS-DBT", "label": "BCS-DBT", "shape": "box", "title": "22,032 reconstructed DBT volumes belonging to\n5,610 studies from 5,060 patients.  5,129 normal\nstudies  280 studies where additional imaging was\nneeded  112 benign biopsied studies  89 studies\nwith cancer"}, {"color": "#FFDF00", "id": "Breast_Cancer_Detection", "label": "Breast_Cancer_Detection", "shape": "box", "title": "Breast cancer detection involves a variety of\nmethods to identify the presence of cancer in the\nbreast at an early stage when treatment can be\nmost effective."}, {"color": "#3CB371", "id": "Accessible", "label": "Accessible", "shape": "box", "title": "The dataset can be accessed without fulfilling any requirements"}, {"color": "#87CEEB", "id": "BancoWeb", "label": "BancoWeb", "shape": "box", "title": "1400 images from 320 cases"}, {"color": "#3CB371", "id": "Need to sign agreement to access", "label": "Need to sign agreement to access", "shape": "box", "title": "The dataset can be accessed after signing agreement and fulfilling some requirements"}, {"color": "#87CEEB", "id": "CBIS-DDSM", "label": "CBIS-DDSM", "shape": "box", "title": "2620 scanned film mammograms converted into dicom\nimages  Total 10,239 images  6,775 studies  6,671\nsubjects"}, {"color": "#87CEEB", "id": "CMMD", "label": "CMMD", "shape": "box", "title": "3,728 mammographies from 1,775 patients  patients\u0027\nmolecular subtypes was included for 749 of these\npatients (1,498 mammographies)   Total 5202 images"}, {"color": "#FFDF00", "id": "Mammographic_Report_Generation", "label": "Mammographic_Report_Generation", "shape": "box", "title": "Mammographic Report Generation is an essential\nprocess in breast cancer detection, where\nradiologists analyze mammograms (X-ray images of\nthe breast) and document their findings. These\nreports provide crucial information for\nclinicians, helping them assess breast health,\nidentify potential abnormalities, and make\ndecisions regarding further diagnostic workups or\ntreatments."}, {"color": "#87CEEB", "id": "DDSM", "label": "DDSM", "shape": "box", "title": "2620 scanned film mammograms (images)  339 images\nwith abnormalities  373 normal cases  223 cancer\ncases  1,566 patients"}, {"color": "#87CEEB", "id": "DREAM", "label": "DREAM", "shape": "box", "title": "310 809 screening mammograms from 153 588 patients"}, {"color": "#3CB371", "id": "Not Accessible", "label": "Not Accessible", "shape": "box", "title": "The dataset cannot be accessed or not available or only accessible to limited audience"}, {"color": "#87CEEB", "id": "EMBED", "label": "EMBED", "shape": "box", "title": "3 383 659 screening and diagnostic mammogram\nimages from 115 910 patients  364 896 exams (281\n509 screening + 83 387 diagnostic)  148 320\n(52.5%) screening were 2D only 65 265 (78.3%)\ndiagnostic were 2D only  133 189 (47.3%) screening\nwere 2D+3D+Synthetic 2D+Screen save  18 122\n(21.7%) diagnostic were 2D+3D+Synthetic 2D+Screen\nsave  40,826 ROIs"}, {"color": "#FFDF00", "id": "Breast_Cancer_Risk_Prediction", "label": "Breast_Cancer_Risk_Prediction", "shape": "box", "title": "Breast cancer risk prediction involves evaluating\nvarious factors that can influence a person\u0027s\nlikelihood of developing breast cancer. These risk\nfactors are often used to assess a person\u0027s risk\nprofile and guide decisions about screening,\npreventive measures, and other medical\ninterventions."}, {"color": "#87CEEB", "id": "IRMA", "label": "IRMA", "shape": "box", "title": "Not many info"}, {"color": "#87CEEB", "id": "Inbreast", "label": "Inbreast", "shape": "box", "title": "115 cases (410 images)  90 women with 4 images  25\nwomen with 2 images (Masectomy)"}, {"color": "#87CEEB", "id": "LLNL dataset", "label": "LLNL dataset", "shape": "box", "title": "198 images from 50 cases"}, {"color": "#87CEEB", "id": "MIAS", "label": "MIAS", "shape": "box", "title": "332 images"}, {"color": "#87CEEB", "id": "Magic-5", "label": "Magic-5", "shape": "box", "title": "3369 images from 967 cases"}, {"color": "#87CEEB", "id": "Malaga dataset", "label": "Malaga dataset", "shape": "box", "title": "320 images from 89 cases"}, {"color": "#87CEEB", "id": "Mammogrid", "label": "Mammogrid", "shape": "box", "title": "No info found"}, {"color": "#87CEEB", "id": "Mini-MIAS", "label": "Mini-MIAS", "shape": "box", "title": "Not many info"}, {"color": "#87CEEB", "id": "Miracle DB", "label": "Miracle DB", "shape": "box", "title": "contains 204 mammography images collected from 196\npatients"}, {"color": "#87CEEB", "id": "Nijmegen", "label": "Nijmegen", "shape": "box", "title": "40 images from 21 cases"}, {"color": "#87CEEB", "id": "OMI-DB", "label": "OMI-DB", "shape": "box", "title": "34,104 2D mammography images from 2,623\nindividuals."}, {"color": "#87CEEB", "id": "OPTIMAM", "label": "OPTIMAM", "shape": "box", "title": "3\u2009072\u2009878 images from 172\u2009282 women  4 classes:\nNormal, interval Cancer, benign, malignant  Of the\n7661 screen-detected cancers from episodes with\ndigital images, 5097 have been marked (67% of\ncancers)."}, {"color": "#87CEEB", "id": "RSNA", "label": "RSNA", "shape": "box", "title": "54713 image files (54706 in traning set)  1158\ncancer images  53548 non_cancer images  11427\npatients negative  486 patients positive"}, {"color": "#87CEEB", "id": "UPMC", "label": "UPMC", "shape": "box", "title": "No info found"}, {"color": "#87CEEB", "id": "VinDr-Mammo", "label": "VinDr-Mammo", "shape": "box", "title": "20000 images from 5000 exams (4-view)  241 of\nthese findings are marked BIRADS 5  995 of the\nfindings are marked BIRADS 4  2254 of the findings\nare marked BIRADS 3"}]);
+                  edges = new vis.DataSet([{"color": "#898980", "from": "BCS-DBT", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/breast-\ncancer-screening-dbt/\n \nDetection of masses and architectural distortions\nin digital breast tomosynthesis: a publicly\navailable dataset of 5,060 patients and a deep\nlearning model", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/breast-\ncancer-screening-dbt/\n \nDetection of masses and architectural distortions\nin digital breast tomosynthesis: a publicly\navailable dataset of 5,060 patients and a deep\nlearning model", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "BancoWeb", "title": "Not available\n \nOnline Mammographic Images Database for\nDevelopment and Comparison of CAD Schemes", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "BancoWeb", "title": "Not available\n \nOnline Mammographic Images Database for\nDevelopment and Comparison of CAD Schemes", "to": "Need to sign agreement to access", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/cbis-\nddsm/\n \nA curated mammography data set for use in\ncomputer-aided detection and diagnosis research", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/cbis-\nddsm/\n \nA curated mammography data set for use in\ncomputer-aided detection and diagnosis research", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "CMMD", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/cmmd/#citations\n \nThe Chinese Mammography Database (CMMD): An online\nmammography database with biopsy confirmed types\nfor machine diagnosis of breast", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "CMMD", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/cmmd/#citations\n \nThe Chinese Mammography Database (CMMD): An online\nmammography database with biopsy confirmed types\nfor machine diagnosis of breast", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "CMMD", "title": "Available at\nhttps://www.cancerimagingarchive.net/collection/cmmd/#citations\n \nThe Chinese Mammography Database (CMMD): An online\nmammography database with biopsy confirmed types\nfor machine diagnosis of breast", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DDSM", "title": "Available at\nhttp://www.eng.usf.edu/cvprg/Mammography/Database.html\nAnother modified version avaialble at Kaggle:\nhttps://www.kaggle.com/datasets/skooch/ddsm-\nmammography\n \nCurrent Status of the Digital Database for\nScreening Mammography", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DDSM", "title": "Available at\nhttp://www.eng.usf.edu/cvprg/Mammography/Database.html\nAnother modified version avaialble at Kaggle:\nhttps://www.kaggle.com/datasets/skooch/ddsm-\nmammography\n \nCurrent Status of the Digital Database for\nScreening Mammography", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "DREAM", "title": "CSV files avaialble at\nhttps://www.synapse.org/Synapse:syn1918762\n \nEvaluation of Combined Artificial Intelligence and\nRadiologist Assessment to Interpret Screening\nMammograms", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DREAM", "title": "CSV files avaialble at\nhttps://www.synapse.org/Synapse:syn1918762\n \nEvaluation of Combined Artificial Intelligence and\nRadiologist Assessment to Interpret Screening\nMammograms", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "EMBED", "title": "Available at\nhttps://aws.amazon.com/marketplace/pp/prodview-\nunw4li5rkivs2#overview\n \nThe EMory BrEast imaging Dataset (EMBED): A\nRaciallyDiverse, Granular Dataset of 3.4 Million\nScreening andDiagnostic Mammographic Images", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "EMBED", "title": "Available at\nhttps://aws.amazon.com/marketplace/pp/prodview-\nunw4li5rkivs2#overview\n \nThe EMory BrEast imaging Dataset (EMBED): A\nRaciallyDiverse, Granular Dataset of 3.4 Million\nScreening andDiagnostic Mammographic Images", "to": "Need to sign agreement to access", "weight": 1}, {"color": "#898980", "from": "EMBED", "title": "Available at\nhttps://aws.amazon.com/marketplace/pp/prodview-\nunw4li5rkivs2#overview\n \nThe EMory BrEast imaging Dataset (EMBED): A\nRaciallyDiverse, Granular Dataset of 3.4 Million\nScreening andDiagnostic Mammographic Images", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "EMBED", "title": "Available at\nhttps://aws.amazon.com/marketplace/pp/prodview-\nunw4li5rkivs2#overview\n \nThe EMory BrEast imaging Dataset (EMBED): A\nRaciallyDiverse, Granular Dataset of 3.4 Million\nScreening andDiagnostic Mammographic Images", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "IRMA", "title": "Available at\nhttps://www.kaggle.com/datasets/raddar/irma-xray-\ndataset\n \nContent-based image retrieval in medical\napplication", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "IRMA", "title": "Available at\nhttps://www.kaggle.com/datasets/raddar/irma-xray-\ndataset\n \nContent-based image retrieval in medical\napplication", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "Inbreast", "title": "Available at Kaggle:\nhttps://www.kaggle.com/datasets/ramanathansp20/inbreast-\ndataset\n \nINbreast: toward a full-field digital mammographic\ndatabase", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "Inbreast", "title": "Available at Kaggle:\nhttps://www.kaggle.com/datasets/ramanathansp20/inbreast-\ndataset\n \nINbreast: toward a full-field digital mammographic\ndatabase", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "LLNL dataset", "title": "Not available\n \nToward a standard reference database for computer-\naided mammography", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "LLNL dataset", "title": "Not available\n \nToward a standard reference database for computer-\naided mammography", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "MIAS", "title": "Available at\nhttps://www.repository.cam.ac.uk/items/b6a97f0c-3b9b-40ad-8f18-3d121eef1459\n \nThe mammographic images analysis society digital\nmammogram database", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "MIAS", "title": "Available at\nhttps://www.repository.cam.ac.uk/items/b6a97f0c-3b9b-40ad-8f18-3d121eef1459\n \nThe mammographic images analysis society digital\nmammogram database", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "Magic-5", "title": "Not available\n \nMAGIC-5: an Italian mammographic database of\ndigitised images for research", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Magic-5", "title": "Not available\n \nMAGIC-5: an Italian mammographic database of\ndigitised images for research", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "Malaga dataset", "title": "Not available\n \nAutomatic mass segmentation in mammographic images", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Malaga dataset", "title": "Not available\n \nAutomatic mass segmentation in mammographic images", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "Mammogrid", "title": "Not available\n \nMammoGrid: a prototype distributed mammographic\ndatabase for Europe", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Mammogrid", "title": "Not available\n \nMammoGrid: a prototype distributed mammographic\ndatabase for Europe", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "Mini-MIAS", "title": "Available at\nhttps://www.kaggle.com/datasets/kmader/mias-\nmammography/data?select=all-mias.tar.gz\n \nKaggle", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Mini-MIAS", "title": "Available at\nhttps://www.kaggle.com/datasets/kmader/mias-\nmammography/data?select=all-mias.tar.gz\n \nKaggle", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "Miracle DB", "title": "Not available\n \nA web-accessible mammographic image database\ndedicated to combined training and evaluation of\nradiologists and machines", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Miracle DB", "title": "Not available\n \nA web-accessible mammographic image database\ndedicated to combined training and evaluation of\nradiologists and machines", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "Nijmegen", "title": "Not available\n \nA computerized system for detection and\nsegmentation of clustered microcalcifications", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Nijmegen", "title": "Not available\n \nA computerized system for detection and\nsegmentation of clustered microcalcifications", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "OMI-DB", "title": "Not available\n \nThe oncology medical image database (OMI-DB)", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "OMI-DB", "title": "Not available\n \nThe oncology medical image database (OMI-DB)", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "OMI-DB", "title": "Not available\n \nThe oncology medical image database (OMI-DB)", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "title": "Available at\nhttps://medphys.royalsurrey.nhs.uk/omidb/\n \nOPTIMAM Mammography Image Database: A Large-Scale\nResource of Mammography Images and Clinical Data", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "title": "Available at\nhttps://medphys.royalsurrey.nhs.uk/omidb/\n \nOPTIMAM Mammography Image Database: A Large-Scale\nResource of Mammography Images and Clinical Data", "to": "Need to sign agreement to access", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "title": "Available at\nhttps://medphys.royalsurrey.nhs.uk/omidb/\n \nOPTIMAM Mammography Image Database: A Large-Scale\nResource of Mammography Images and Clinical Data", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "RSNA", "title": "Available at\nhttps://www.kaggle.com/competitions/rsna-breast-\ncancer-detection/data\n \nRSNA Screening Mammography Breast Cancer Detection", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "RSNA", "title": "Available at\nhttps://www.kaggle.com/competitions/rsna-breast-\ncancer-detection/data\n \nRSNA Screening Mammography Breast Cancer Detection", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "UPMC", "title": "Not available\n \nMammo-CLIP: A Vision Language Foundation Model to\nEnhance Data Efficiency and Robustness in\nMammography", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "UPMC", "title": "Not available\n \nMammo-CLIP: A Vision Language Foundation Model to\nEnhance Data Efficiency and Robustness in\nMammography", "to": "Not Accessible", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "title": "Available at\nhttps://www.physionet.org/content/vindr-\nmammo/1.0.0/ Free version available at Kaggle:\nhttps://www.kaggle.com/datasets/shantanughosh/vindr-\nmammogram-dataset-dicom-to-png\n \nVinDr-Mammo: A large-scale benchmark dataset for\ncomputer-aided detection and diagnosis in full-\nfield digital mammography", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "title": "Available at\nhttps://www.physionet.org/content/vindr-\nmammo/1.0.0/ Free version available at Kaggle:\nhttps://www.kaggle.com/datasets/shantanughosh/vindr-\nmammogram-dataset-dicom-to-png\n \nVinDr-Mammo: A large-scale benchmark dataset for\ncomputer-aided detection and diagnosis in full-\nfield digital mammography", "to": "Accessible", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "title": "Available at\nhttps://www.physionet.org/content/vindr-\nmammo/1.0.0/ Free version available at Kaggle:\nhttps://www.kaggle.com/datasets/shantanughosh/vindr-\nmammogram-dataset-dicom-to-png\n \nVinDr-Mammo: A large-scale benchmark dataset for\ncomputer-aided detection and diagnosis in full-\nfield digital mammography", "to": "Need to sign agreement to access", "weight": 1}, {"color": "#898980", "from": "MIAS", "title": "Mini-MIAS is a smaller version of MIAS", "to": "Mini-MIAS", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "title": "CBIS-DDSM is an extended and modified version of DDSM", "to": "DDSM", "weight": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
