@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attractive UI Example</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Sidebar Section -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="#"><i class="fas fa-cogs"></i> Services</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </aside>
+
+    <!-- Header Section -->
+    <!-- <header class="header-section">
+        <nav class="nav-bar">
+            <div class="logo-container">
+                <strong><h3>Mammo-Find: A Tool For Mammogram Dataset Recommendations </h3> </strong>
+            </div>
+            <ul class="navigation-menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header> -->
+
+            <!-- Page Content Holder -->
+            <div id="content">
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+    
+                        <button type="button" id="sidebarCollapse" class="navbar-btn">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fas fa-align-justify"></i>
+                        </button>
+    
+                        <strong><h3>ReACTive: Interactive Visualization of Researched Actionables</h3> </strong>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="nav navbar-nav ml-auto">
+                                <li class="nav-item">
+                                    <a href="about.html"><img src="img/icon2.png" height="50px" width="50px" class="rounded-image" alt="about" title="About"></a>
+                                </li>
+    
+                                <li class="nav-item" style="margin-left: 8px;">
+                                    <a href="contact.html"><img src="img/contact.png" height="50px" width="50px" class="rounded-image" alt="Contact" title="Contact"></a>
+                                </li>
+    
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+
+   <!-- Main Content -->
+   <h4 id="section1" style="color: darkblue; text-align: center;">Network Graph Displaying the Datasets</h4>
+   <div style="position: absolute;top: 190px;right: 22px;"><img src="img/ReACTAndFeatures.png" height="160" alt="legend"></div>
+    <iframe src="Network_Graph.html" width="100%" height="900" frameborder="0"></iframe>
+      
+    
+
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum
+magna sed, convallis ex.</p>
+            <button class="btn">Learn More</button>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-section">
+        <div class="container">
+            <span>&copy; 2024 Our Company. All rights reserved.</span>
+        </div>
+    </footer>
+</body>
+</html>
