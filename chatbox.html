@@ -17,7 +17,7 @@
         }
         .chat-container {
             width: 600px; /* Increased width */
-            height: 100%;  /* Increased height */
+            height: 95%;  /* Increased height */
             background: #ffffff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
@@ -25,13 +25,22 @@
             display: flex;
             flex-direction: column;
         }
-        .chat-display {
+        /* .chat-display {
             flex: 1;
             padding: 16px;
             overflow-y: auto;
             background: #f9f9f9;
             border-bottom: 1px solid #ddd;
+        } */
+        .chat-display {
+            flex: 1;
+            padding: 16px;
+            padding-bottom: 50px; /* Add extra bottom padding to account for the input box height */
+            overflow-y: auto; /* Enable vertical scrolling */
+            background: #f9f9f9;
+            border-bottom: 1px solid #ddd;
         }
+
         .chat-display .message {
             margin-bottom: 12px;
         }
@@ -93,10 +102,10 @@
 
     <script>
         const chatDisplay = document.getElementById('chatDisplay');
-    
+
         document.addEventListener('DOMContentLoaded', () => {
             const inputBox = document.getElementById('userInput');
-    
+
             // Listen for the Enter key press
             inputBox.addEventListener('keydown', (event) => {
                 if (event.key === 'Enter') {
@@ -105,18 +114,19 @@
                 }
             });
         });
-    
+
         async function sendMessage() {
             const inputBox = document.getElementById('userInput');
             const userMessage = inputBox.value.trim();
-    
+
             if (userMessage) {
                 // Add user message to the chat display
                 addMessage(userMessage, 'user');
-    
+                inputBox.value = ''; // Clear input box
+
                 try {
-                    // Send the user's message to the local Ollama server
-                    const response = await fetch('http://localhost:11434', {
+                    // Send the user's message to the Flask server
+                    const response = await fetch('http://127.0.0.1:8080/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -125,12 +135,12 @@
                             prompt: userMessage // Sending the user's input as a prompt
                         })
                     });
-    
+
                     // Parse the server's response
                     if (response.ok) {
                         const data = await response.json();
-                        const botResponse = data.response; // Adjust based on your server's response format
-    
+                        const botResponse = data.response; // Response from the Flask backend
+
                         // Add bot response to the chat display
                         addMessage(botResponse, 'bot');
                     } else {
@@ -138,20 +148,38 @@
                     }
                 } catch (error) {
                     // Handle errors (e.g., server unavailable)
-                    // addMessage(`Error: ${error.message}`, 'error');
-                    addMessage('How can I help you?');
+                    addMessage('Server not active');
                 }
             }
-    
+
             inputBox.value = ''; // Clear input box
         }
-    
+
+        async function getChatInfo() {
+            const response = await fetch('http://127.0.0.1:8080/chat', {
+                method: 'GET',
+            });
+
+            const data = await response.json();
+            addMessage(data.response, 'bot'); // This will log "Welcome to the chat! Please send a POST request with your prompt."
+        }
+
+        // Function to scroll to the bottom of the chat display
+        function scrollToBottom() {
+            const chatDisplay = document.querySelector('.chat-display');
+            chatDisplay.scrollTop = chatDisplay.scrollHeight; // Scroll to the bottom
+        }
+
+
         function addMessage(message, sender) {
             const messageElement = document.createElement('div');
             messageElement.classList.add('message', sender);
             messageElement.textContent = message;
             chatDisplay.appendChild(messageElement);
             chatDisplay.scrollTop = chatDisplay.scrollHeight; // Auto-scroll to the bottom
+
+            // Automatically scroll to the bottom
+            scrollToBottom();
         }
     </script>
     
