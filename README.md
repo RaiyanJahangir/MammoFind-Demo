@@ -3,12 +3,12 @@ An LLM-based Web Visualization tool for Mammogram dataset recommendations
 
 ## To run the code, follow the instructions below
 
-### You will need Python 3.11.17
+### You will need Python 3.11.7
 
 ### You will need Ollama installed in your pc and have some LLMs downloaded
 
 ### First clone the git repository
-git clone 
+git clone https://github.com/RaiyanJahangir/Mammo-Find.git
 
 ### Go to the root directory and then open the command prompt
 py -3.11 -m venv myenv  //You may need python 3.11 installed on your pc along with other versions.
