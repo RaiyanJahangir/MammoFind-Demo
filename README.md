@@ -1,22 +1,27 @@
 # Mammo-Find
 An LLM-based Web Visualization tool for Mammogram dataset recommendations 
 
-## To run the code, you need python 3.11.7
+## To run the code, follow the instructions below
 
-# To create a virtual environment with a specific version, use the following commands:
+### You will need Python 3.11.17
 
-Go to the root directory
+### You will need Ollama installed in your pc and have some LLMs downloaded
 
+### First clone the git repository
+git clone 
+
+### Go to the root directory and then open the command prompt
 py -3.11 -m venv myenv  //You may need python 3.11 installed on your pc along with other versions.
 
-To activate the virtual environment:
+### To activate the virtual environment:
 myenv\Scripts\activate
 
-To install requirement file
+### To install all the necessary packages and libraries
 pip install -r requirements.txt
 
-To update/create a requirements file
-pip freeze > requirements.txt
+### Now run the Graph_Generator.ipynb
 
-To deactivate the virtual environment:
-deactivate
+### After running the notebook, check index.html to see the generated graph
+
+### Then start the Flaskk Server by running app.py
+This code activates the flask server and connects the LLM to the web interface for chatting.
