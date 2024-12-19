@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#87CEEB", "id": "BCS-DBT", "label": "BCS-DBT", "shape": "dot", "title": "Contains Digital Breast Tomosynthesis (3D) Images.\n22,032 reconstructed DBT volumes belonging to\n5,610 studies from 5,060 patients.  5,129 normal\nstudies,  280 studies where additional imaging was\nneeded,  112 benign biopsied studies,  89 studies\nwith cancer.\n \nAvailable at\nhttps://www.cancerimagingarchive.net/collection/breast-\ncancer-screening-dbt/\n \nAssociated Article: Detection of masses and architectural distortions\nin digital breast tomosynthesis: a publicly\navailable dataset of 5,060 patients and a deep\nlearning model"}, {"color": "#FFDF00", "id": "Breast_Cancer_Detection", "label": "Breast_Cancer_Detection", "shape": "dot", "title": "Breast cancer detection involves a variety of methods to identify the presence of cancer in the breast at an early stage when treatment can be most effective."}, {"color": "#FFDF00", "id": "Breast_Density_Estimation", "label": "Breast_Density_Estimation", "shape": "dot", "title": "Breast density estimation refers to the process of assessing the density of breast tissue, typically using mammogram images. Breast density is an important factor in breast cancer risk assessment because dense breast tissue can make it harder to detect tumors on mammograms and is also associated with an increased risk of developing breast cancer."}, {"color": "#FFDF00", "id": "Breast_Cancer_Type_Classification", "label": "Breast_Cancer_Type_Classification", "shape": "dot", "title": "Breast Cancer Type Classification refers to the process of classifying the type of breast cancer based on features extracted from various sources such as medical imaging. The goal is to categorize cancer into various types, such as invasive or non-invasive, based on these features."}, {"color": "#FFDF00", "id": "Tumor_Localization", "label": "Tumor_Localization", "shape": "dot", "title": "Tumor Localization refers to the process of identifying and pinpointing the exact location of a tumor within the body. This is a crucial step in diagnosing cancer, planning treatment strategies, and monitoring tumor progression or response to therapy"}, {"color": "#FFDF00", "id": "Multi_Modal_Learning", "label": "Multi_Modal_Learning", "shape": "dot", "title": "Multi-modal learning refers to the ability of a machine learning model to process and integrate data from multiple modalities or sources, such as images, text, audio, video, and more. Instead of relying on a single data type, multi-modal learning aims to combine these diverse types of data to create richer and more robust models that can perform more complex tasks by leveraging the complementary information provided by each modality."}, {"color": "#FFDF00", "id": "Synthetic_Data_Generation", "label": "Synthetic_Data_Generation", "shape": "dot", "title": "Synthetic data generation refers to the process of creating artificial datasets that mimic real-world data but are not directly collected from real-world events or observations. This generated data can be used for various applications, including training machine learning models, testing algorithms, conducting simulations, and augmenting real datasets in a way that preserves the statistical properties of the original data."}, {"color": "#87CEEB", "id": "BancoWeb", "label": "BancoWeb", "shape": "dot", "title": "Contains 1400 images from 320 cases.\n \nNot available\n \nAssociated Article: Online Mammographic Images Database for\nDevelopment and Comparison of CAD Schemes"}, {"color": "#87CEEB", "id": "CBIS-DDSM", "label": "CBIS-DDSM", "shape": "dot", "title": "Curated Breast Imaging Sub-set of the Digital\nDatabase for Screening Mammography.  2620 scanned\nfilm mammograms converted into dicom images making\na total of 10,239 images.\n \nAvailable at\nhttps://www.cancerimagingarchive.net/collection/cbis-\nddsm/\n \nAssociated Article: A curated mammography data set for use in\ncomputer-aided detection and diagnosis research"}, {"color": "#FFDF00", "id": "Breast_Tumor_Classification", "label": "Breast_Tumor_Classification", "shape": "dot", "title": "Breast Tumor Classification refers to the process of classifying breast tumors into different categories based on their nature (benign or malignant)."}, {"color": "#FFDF00", "id": "Image_Segmentation", "label": "Image_Segmentation", "shape": "dot", "title": "Image segmentation is a critical task in computer vision that involves dividing an image into multiple segments or regions, each of which corresponds to a specific part of the image. The goal is to simplify or change the representation of an image, making it more meaningful and easier to analyze."}, {"color": "#FFDF00", "id": "Mammographic_Report_Generation", "label": "Mammographic_Report_Generation", "shape": "dot", "title": "Mammographic Report Generation is an essential process in breast cancer detection, where radiologists analyze mammograms (X-ray images of the breast) and document their findings. These reports provide crucial information for clinicians, helping them assess breast health, identify potential abnormalities, and make decisions regarding further diagnostic workups or treatments."}, {"color": "#87CEEB", "id": "CMMD", "label": "CMMD", "shape": "dot", "title": "Chinese MaMmography Database. 3,728 mammographies\nfrom 1,775 patients, patients\u0027 molecular subtypes\nwas included for 749 of these patients (1,498\nmammographies). Total 5202 images\n \nAvailable at\nhttps://www.cancerimagingarchive.net/collection/cmmd/#citations\n \nAssociated Article: The Chinese Mammography Database (CMMD): An online\nmammography database with biopsy confirmed types\nfor machine diagnosis of breast"}, {"color": "#87CEEB", "id": "DDSM", "label": "DDSM", "shape": "dot", "title": "Digital Database for Screening Mammography.  2620\nscanned film mammograms (images), 339 images with\nabnormalities, 373 normal cases, 223 cancer cases.\n \nAvailable at\nhttp://www.eng.usf.edu/cvprg/Mammography/Database.html\nAnother modified version avaialble at Kaggle:\nhttps://www.kaggle.com/datasets/skooch/ddsm-\nmammography\n \nAssociated Article: Current Status of the Digital Database for\nScreening Mammography"}, {"color": "#FFDF00", "id": "Lesion_Localization", "label": "Lesion_Localization", "shape": "dot", "title": "Lesion localization refers to the process of identifying and locating abnormal regions or lesions in medical images. Lesions can appear as tumors, cysts, or any other abnormal tissue that differs from the surrounding healthy tissue."}, {"color": "#87CEEB", "id": "DMID", "label": "DMID", "shape": "dot", "title": "Contains 510 images. Among them, 274 are abnormal\nimages, including benign and malignant cases.\n \nAvailable at\nhttps://figshare.com/articles/dataset/_b_Digital_mammography_Dataset_for_Breast_Cancer_Diagnosis_Research_DMID_b_DMID_rar/24522883\n \nAssociated Article: Digital mammography dataset for breast cancer\ndiagnosis research (DMID) with breast mass\nsegmentation analysis"}, {"color": "#FFDF00", "id": "BIRADS_Category_Classification", "label": "BIRADS_Category_Classification", "shape": "dot", "title": "BIRADS (Breast Imaging-Reporting and Data System) is a standardized system to categorize breast lesions identified in mammography, ultrasound, and magnetic resonance imaging (MRI). The BIRADS system helps radiologists classify breast abnormalities based on their appearance in imaging studies and provides a framework for communicating the likelihood of malignancy, guiding clinical decision-making and follow-up actions."}, {"color": "#87CEEB", "id": "DREAM", "label": "DREAM", "shape": "dot", "title": "Dialogue on Reverse Engineering Assessment and\nMethods.  144\u202f231 screening mammograms from 85\u202f580\nwomen from the United States and 166\u202f578 screening\nmammograms from 68\u202f008 women from Sweden.\n \nMetadata files available at\nhttps://www.synapse.org/Synapse:syn1918762\n \nAssociated Article: Evaluation of Combined Artificial Intelligence and\nRadiologist Assessment to Interpret Screening\nMammograms"}, {"color": "#87CEEB", "id": "EMBED", "label": "EMBED", "shape": "dot", "title": "EMory BrEast imaging Dataset.  3 383 659\nscreening and diagnostic mammogram images from 115\n910 patients. Among these, 20% of the total 2D and\nC-view dataset and is available for research use.\n \nAvailable at\nhttps://aws.amazon.com/marketplace/pp/prodview-\nunw4li5rkivs2#overview\n \nAssociated Article: The EMory BrEast imaging Dataset (EMBED): A\nRaciallyDiverse, Granular Dataset of 3.4 Million\nScreening andDiagnostic Mammographic Images"}, {"color": "#FFDF00", "id": "Breast_Cancer_Risk_Prediction", "label": "Breast_Cancer_Risk_Prediction", "shape": "dot", "title": "Breast cancer risk prediction involves evaluating various factors that can influence a person\u0027s likelihood of developing breast cancer. These risk factors are often used to assess a person\u0027s risk profile and guide decisions about screening, preventive measures, and other medical interventions."}, {"color": "#87CEEB", "id": "Inbreast", "label": "Inbreast", "shape": "dot", "title": "115 cases (410 images),  90 women with 4 images,\n25 women with 2 images (Masectomy).\n \nAvailable at Kaggle:\nhttps://www.kaggle.com/datasets/ramanathansp20/inbreast-\ndataset\n \nAssociated Article: INbreast: toward a full-field digital mammographic\ndatabase"}, {"color": "#87CEEB", "id": "KAU-BCMD", "label": "KAU-BCMD", "shape": "dot", "title": "King Abdulaziz University Breast Cancer Mammogram\nDataset. First significant mammogram dataset from\nSaudi Arabia. 1416 cases each with 2 views of both\nbreasts making a total of 5664 images.  Also\ncontains 205 ultrasound cases corresponding to a\npart of the mammogram cases, with 405 images as a\ntotal.\n \nAvailable at\nhttps://www.kaggle.com/datasets/asmaasaad/king-\nabdulaziz-university-mammogram-dataset\n \nAssociated Article: King Abdulaziz University Breast Cancer Mammogram\nDataset (KAU-BCMD)"}, {"color": "#87CEEB", "id": "LLNL", "label": "LLNL", "shape": "dot", "title": "Contains 198 images from 50 cases.\n \nNot available\n \nAssociated Article: Toward a standard reference database for computer-\naided mammography"}, {"color": "#87CEEB", "id": "MIAS", "label": "MIAS", "shape": "dot", "title": "Mammographic Imaging Analysis Society. Database\ncontains 332 images.\n \nAvailable at\nhttps://www.repository.cam.ac.uk/items/b6a97f0c-3b9b-40ad-8f18-3d121eef1459\n \nAssociated Article: The mammographic images analysis society digital\nmammogram database"}, {"color": "#87CEEB", "id": "Magic-5", "label": "Magic-5", "shape": "dot", "title": "Contains 3369 images from 967 cases.\n \nNot available\n \nAssociated Article: MAGIC-5: an Italian mammographic database of\ndigitised images for research"}, {"color": "#87CEEB", "id": "Malaga", "label": "Malaga", "shape": "dot", "title": "Contains 320 images from 89 cases.\n \nNot available\n \nAssociated Article: Automatic mass segmentation in mammographic images"}, {"color": "#87CEEB", "id": "Mammogrid", "label": "Mammogrid", "shape": "dot", "title": "No information found\n \nNot available\n \nAssociated Article: MammoGrid: a prototype distributed mammographic\ndatabase for Europe"}, {"color": "#87CEEB", "id": "Miracle DB", "label": "Miracle DB", "shape": "dot", "title": "Contains 204 mammography images collected from 196\npatients.\n \nNot available\n \nAssociated Article: A web-accessible mammographic image database\ndedicated to combined training and evaluation of\nradiologists and machines"}, {"color": "#87CEEB", "id": "Nijmegen", "label": "Nijmegen", "shape": "dot", "title": "Contains 40 images from 21 cases.\n \nNot available\n \nAssociated Article: A computerized system for detection and\nsegmentation of clustered microcalcifications"}, {"color": "#87CEEB", "id": "OMI-DB", "label": "OMI-DB", "shape": "dot", "title": "Oncology Medical Image DataBase. 34,104 2D\nmammography images from 2,623 individuals.\n \nNot available\n \nAssociated Article: The oncology medical image database (OMI-DB)"}, {"color": "#87CEEB", "id": "OPTIMAM", "label": "OPTIMAM", "shape": "dot", "title": "3\u2009072\u2009878 images from 172\u2009282 women.  4 classes:\nNormal, interval Cancer, benign, malignant.  Of\nthe 7661 screen-detected cancers from episodes\nwith digital images, 5097 have been marked (67% of\ncancers).\n \nAvailable at\nhttps://medphys.royalsurrey.nhs.uk/omidb/\n \nAssociated Article: OPTIMAM Mammography Image Database: A Large-Scale\nResource of Mammography Images and Clinical Data"}, {"color": "#87CEEB", "id": "RBIS-DDSM", "label": "RBIS-DDSM", "shape": "dot", "title": "Re-curated Breast Imaging Subset of the Digital\nDatabase for Screening Mammography. Its an\nupdated, extended, and standardized version of\nCBIS-DDSM. It contains 849 mammogram images\n \nAvailable at https://ieee-\ndataport.org/documents/re-curated-breast-imaging-\nsubset-ddsm-dataset-rbis-ddsm\n \nAssociated Article: No associated paper"}, {"color": "#87CEEB", "id": "RSNA", "label": "RSNA", "shape": "dot", "title": "Royal Society of North America. 54713 image files\n(54706 in training set), 1158 cancer images, 53548\nnon_cancer images, 11427 patients negative, 486\npatients positive.\n \nAvailable at\nhttps://www.kaggle.com/competitions/rsna-breast-\ncancer-detection/data\n \nAssociated Article: No associated paper"}, {"color": "#FFDF00", "id": "Class_Balancing", "label": "Class_Balancing", "shape": "dot", "title": "Class balancing is a critical concept in machine learning and data science, particularly when dealing with imbalanced datasets, where the distribution of instances across classes is not uniform."}, {"color": "#87CEEB", "id": "VinDr-Mammo", "label": "VinDr-Mammo", "shape": "dot", "title": "20000 images from 5000 exams (4-view),  241 of\nthese findings are marked BIRADS 5,  995 of the\nfindings are marked BIRADS 4,  2254 of the\nfindings are marked BIRADS 3,\n \nAvailable at\nhttps://www.physionet.org/content/vindr-\nmammo/1.0.0/ Free version available at Kaggle:\nhttps://www.kaggle.com/datasets/shantanughosh/vindr-\nmammogram-dataset-dicom-to-png\n \nAssociated Article: VinDr-Mammo: A large-scale benchmark dataset for\ncomputer-aided detection and diagnosis in full-\nfield digital mammography"}, {"color": "#FFDF00", "id": "Anomaly_Detection", "label": "Anomaly_Detection", "shape": "dot", "title": "Anomaly detection, also known as outlier detection, refers to the process of identifying patterns or data points that deviate significantly from the expected behavior or normal distribution of the data."}]);
+                  edges = new vis.DataSet([{"color": "#898980", "from": "BCS-DBT", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "to": "Breast_Density_Estimation", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "to": "Tumor_Localization", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "to": "Multi_Modal_Learning", "weight": 1}, {"color": "#898980", "from": "BCS-DBT", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "BancoWeb", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Image_Segmentation", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Multi_Modal_Learning", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Image_Segmentation", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Multi_Modal_Learning", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "CMMD", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "DDSM", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DDSM", "to": "Lesion_Localization", "weight": 1}, {"color": "#898980", "from": "DMID", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DMID", "to": "BIRADS_Category_Classification", "weight": 1}, {"color": "#898980", "from": "DMID", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "DREAM", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "DREAM", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Tumor_Localization", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Breast_Density_Estimation", "weight": 1}, {"color": "#898980", "from": "EMBED", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "Inbreast", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Inbreast", "to": "Lesion_Localization", "weight": 1}, {"color": "#898980", "from": "Inbreast", "to": "Image_Segmentation", "weight": 1}, {"color": "#898980", "from": "Inbreast", "to": "Breast_Density_Estimation", "weight": 1}, {"color": "#898980", "from": "Inbreast", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "KAU-BCMD", "to": "BIRADS_Category_Classification", "weight": 1}, {"color": "#898980", "from": "KAU-BCMD", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "KAU-BCMD", "to": "Tumor_Localization", "weight": 1}, {"color": "#898980", "from": "KAU-BCMD", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "LLNL", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "MIAS", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "MIAS", "to": "Lesion_Localization", "weight": 1}, {"color": "#898980", "from": "MIAS", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "Magic-5", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Malaga", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Mammogrid", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Miracle DB", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "Nijmegen", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "OMI-DB", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "to": "Tumor_Localization", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Image_Segmentation", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Multi_Modal_Learning", "weight": 1}, {"color": "#898980", "from": "RBIS-DDSM", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "RSNA", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "RSNA", "to": "Class_Balancing", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Breast_Cancer_Detection", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Breast_Cancer_Risk_Prediction", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Mammographic_Report_Generation", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Breast_Cancer_Type_Classification", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Breast_Tumor_Classification", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Tumor_Localization", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Breast_Density_Estimation", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Synthetic_Data_Generation", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Anomaly_Detection", "weight": 1}, {"color": "#898980", "from": "VinDr-Mammo", "to": "Multi_Modal_Learning", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "title": "RBIS is further curated and smaller version of CBIS-DDSM", "to": "RBIS-DDSM", "weight": 1}, {"color": "#898980", "from": "CBIS-DDSM", "title": "CBIS-DDSM is an extended and modified version of DDSM", "to": "DDSM", "weight": 1}, {"color": "#898980", "from": "OPTIMAM", "title": "OPTIMAM is a newer version of OMI-DB", "to": "OMI-DB", "weight": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

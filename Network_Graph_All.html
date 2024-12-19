@@ -51,6 +51,118 @@
 
     <body>
         <div class="card" style="width: 100%">
+
+                        <!-- Checkbox Section -->
+                        <div class="checkbox-options" style="position: absolute; top: 1px; left: 5px; z-index: 10; background-color: rgba(255, 255, 255, 0.8); padding: 5px; border-radius: 4px;">
+                
+                            <label>
+                                <input type="checkbox" onchange="toggleNodesByColor('#90EE90', this.checked)" checked> Status
+                            </label>
+                            <label>
+                                <input type="checkbox" onchange="toggleNodesByColor('#FFDF00', this.checked)" checked> Tasks
+                            </label>
+                            <label>
+                                <input type="checkbox" onchange="toggleNodesByColor('#FF7F7F', this.checked)" checked> Datatype
+                            </label>
+                            <label>
+                                <input type="checkbox" onchange="toggleNodesByColor('#FFA07A', this.checked)" checked> Filetype
+                            </label>
+                            <label>
+                                <input type="checkbox" onchange="toggleNodesByColor('#D8BFD8', this.checked)" checked> Location
+                            </label>
+                            <br>
+                            <!-- Node Hiding Section -->
+                            <!-- <label style="text-align: right;">Hide Selected Node:</label> -->
+                            <label style="text-align: right;">Hide Selected Node: <span id="selected-node">None</span></label>
+                            <!-- <span id="selected-node"></span> -->
+                             <br>
+                            <button 
+                                onclick="hideSelectedNode()" 
+                                style="
+                                    background-color: #007BFF; 
+                                    border: none; 
+                                    color: white; 
+                                    padding: 5px 12px; 
+                                    text-align: center; 
+                                    font-size: 12px; 
+                                    font-weight: bold; 
+                                    border-radius: 20px; 
+                                    cursor: pointer; 
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+                                    transition: background-color 0.3s ease, transform 0.3s ease;
+                                "
+                                onmouseover="this.style.backgroundColor='#0056b3'; this.style.transform='scale(1.05)';"
+                                onmouseout="this.style.backgroundColor='#007BFF'; this.style.transform='scale(1)';"
+                                onmousedown="this.style.backgroundColor='#004085';"
+                                onmouseup="this.style.backgroundColor='#0056b3';">
+                                Hide Selected Node
+                            </button>
+                           
+                        </div> 
+            
+                        
+                        
+                        <div id="mynetwork" class="card-body"></div>
+                    </div>
+            
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                
+                            // Track the currently selected node
+                            let selectedNode = null;
+                
+                            // Function to toggle visibility of nodes and their edges by color
+                            function toggleNodesByColor(color, isChecked) {
+                                nodes.forEach(node => {
+                                    if (node.color === color) {
+                                        // Toggle node visibility
+                                        nodes.update({id: node.id, hidden: !isChecked});
+                
+                                        // Toggle connected edges visibility
+                                        edges.forEach(edge => {
+                                            if (edge.from === node.id || edge.to === node.id) {
+                                                edges.update({id: edge.id, hidden: !isChecked});
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                
+                            // Function to hide a selected node and its connected edges
+                            function hideSelectedNode() {
+                                if (selectedNode) {
+                                    nodes.update({id: selectedNode, hidden: true});
+                                    edges.forEach(edge => {
+                                        if (edge.from === selectedNode || edge.to === selectedNode) {
+                                            edges.update({id: edge.id, hidden: true});
+                                        }
+                                    });
+                                    document.getElementById("selected-node").textContent = "None";
+                                    selectedNode = null;
+                                } else {
+                                    alert("No node selected!");
+                                }
+                            }
+                
+                            // Event listener for node selection
+                            network.on("selectNode", function (params) {
+                                if (params.nodes.length > 0) {
+                                    selectedNode = params.nodes[0];
+                                    document.getElementById("selected-node").textContent = `${selectedNode}`;
+                                }
+                            });
+                
+                            // Event listener for deselection
+                            network.on("deselectNode", function () {
+                                selectedNode = null;
+                                document.getElementById("selected-node").textContent = "None";
+                            });
+                
+                            // Attach functions to the global scope for external use
+                            window.toggleNodesByColor = toggleNodesByColor;
+                            window.hideSelectedNode = hideSelectedNode;
+                        });
+                    </script>
             
             
             <div id="mynetwork" class="card-body"></div>

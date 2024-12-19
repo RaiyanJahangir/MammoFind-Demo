@@ -47,21 +47,24 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Initialize the Mistral model for generation (you can use the model you have locally)
-model = OllamaLLM(model="mistral")
+model = OllamaLLM(model="llama3.2")
 
 # Define the conversation template for the prompt
 template = """ 
 If the users do not ask anything about mammograms or simply say Hi/Hello, just act like a normal model.
 
-Here is the conversation history: {context}
+Question: Tell me about EMBED dataset?
+Answer: It's a racially diverse data. 3,383,659  screening and diagnostic mammogram images from 115 910 patients. Among these, 20 percent of the total 2D and C-view dataset and is available for research use. Its available based on signing agreement.
 
-Please provide a concise answer to the following question, using no more than 70 words:
+Here is the conversation history: {context}
 
 Question: {question}
 
+Please provide a concise answer to the following question, using no more than 70 words:
+
 Answer:
 """
-
+# Want answers about: {retrieved_context}
 
 # Global conversation context
 context=""
@@ -80,12 +83,12 @@ def chat():
     
     if user_message:
         # Retrieve relevant documents for the query
-        retrieved_docs = retrieve_documents(user_message, top_k=15)  # You can adjust the number of retrieved docs
+        retrieved_docs = retrieve_documents(user_message, top_k=10)  # You can adjust the number of retrieved docs
         retrieved_context = "\n".join(retrieved_docs)  # Combine the retrieved documents to create context\
         # context = "\n".join(retrieved_docs)  # Combine the retrieved documents to create context
 
         # result = chain.invoke({"context": retrieved_context, "question": user_message})
-        result = chain.invoke({"context": retrieved_context, "question": user_message})
+        result = chain.invoke({"context": retrieved_context, "question": user_message,})
         context += f"\nUser: {user_message}\nAI: {result}"  # Update context
         return jsonify({"response": result})
     else:

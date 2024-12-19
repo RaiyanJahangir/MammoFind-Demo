@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Graph with Node Hiding</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #mynetwork {
+            width: 800px;
+            height: 600px;
+            border: 1px solid lightgray;
+            margin-top: 20px;
+        }
+        .control-container {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .control-container label {
+            margin-right: 15px;
+        }
+        #selected-node {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Interactive Network Graph</h2>
+    <p>Use the checkboxes to toggle visibility of nodes by color, or click on a node and hide it using the button below:</p>
+
+    <!-- Checkbox Section -->
+    <div class="control-container">
+        <label>
+            <input type="checkbox" onchange="toggleNodesByColor('#87CEEB', this.checked)" checked> Show Blue Nodes
+        </label>
+        <label>
+            <input type="checkbox" onchange="toggleNodesByColor('#FFDF00', this.checked)" checked> Show Yellow Nodes
+        </label>
+        <label>
+            <input type="checkbox" onchange="toggleNodesByColor('#90EE90', this.checked)" checked> Show Green Nodes
+        </label>
+    </div>
+
+    <!-- Node Hiding Section -->
+    <div class="control-container">
+        <p>Selected Node: <span id="selected-node">None</span></p>
+        <button onclick="hideSelectedNode()">Hide Selected Node</button>
+    </div>
+
+    <!-- Network Graph Container -->
+    <div id="mynetwork"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Define nodes and edges
+            let nodes = new vis.DataSet([
+                {id: 1, label: "Node 1", color: "#87CEEB"}, // Blue node
+                {id: 2, label: "Node 2", color: "#FFDF00"}, // Yellow node
+                {id: 3, label: "Node 3", color: "#87CEEB"}, // Blue node
+                {id: 4, label: "Node 4", color: "#90EE90"}, // Green node
+                {id: 5, label: "Node 5", color: "#90EE90"}  // Green node
+            ]);
+
+            let edges = new vis.DataSet([
+                {id: "1-2", from: 1, to: 2, color: "#898980"},
+                {id: "2-3", from: 2, to: 3, color: "#898980"},
+                {id: "3-4", from: 3, to: 4, color: "#898980"},
+                {id: "4-5", from: 4, to: 5, color: "#898980"}
+            ]);
+
+            // Create network
+            let container = document.getElementById("mynetwork");
+            let data = {nodes: nodes, edges: edges};
+            let options = {};
+            let network = new vis.Network(container, data, options);
+
+            // Track the currently selected node
+            let selectedNode = null;
+
+            // Function to toggle visibility of nodes and their edges by color
+            function toggleNodesByColor(color, isChecked) {
+                nodes.forEach(node => {
+                    if (node.color === color) {
+                        // Toggle node visibility
+                        nodes.update({id: node.id, hidden: !isChecked});
+
+                        // Toggle connected edges visibility
+                        edges.forEach(edge => {
+                            if (edge.from === node.id || edge.to === node.id) {
+                                edges.update({id: edge.id, hidden: !isChecked});
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Function to hide a selected node and its connected edges
+            function hideSelectedNode() {
+                if (selectedNode) {
+                    nodes.update({id: selectedNode, hidden: true});
+                    edges.forEach(edge => {
+                        if (edge.from === selectedNode || edge.to === selectedNode) {
+                            edges.update({id: edge.id, hidden: true});
+                        }
+                    });
+                    document.getElementById("selected-node").textContent = "None";
+                    selectedNode = null;
+                } else {
+                    alert("No node selected!");
+                }
+            }
+
+            // Event listener for node selection
+            network.on("selectNode", function (params) {
+                if (params.nodes.length > 0) {
+                    selectedNode = params.nodes[0];
+                    document.getElementById("selected-node").textContent = `Node ${selectedNode}`;
+                }
+            });
+
+            // Event listener for deselection
+            network.on("deselectNode", function () {
+                selectedNode = null;
+                document.getElementById("selected-node").textContent = "None";
+            });
+
+            // Attach functions to the global scope for external use
+            window.toggleNodesByColor = toggleNodesByColor;
+            window.hideSelectedNode = hideSelectedNode;
+        });
+    </script>
+</body>
+</html>

@@ -95,23 +95,21 @@
     
             <div class="container">
                 <!-- Network Graph Section -->
-                <div class="section network-graph">
+                <div class="section network-graph" style="position: relative;">
                     <h4 class="header">Network Graph Displaying the Datasets</h4>
-                    <!-- <div class="legend">
-                        <img src="" height="160" alt="legend">
-                    </div> -->
-                    <iframe src="Network_Graph.html"></iframe>
+            
+                    
+                    <!-- Network Graph iframe -->
+                    <iframe id="network-iframe" src="Network_Graph_All.html"></iframe>
                 </div>
-
+            
                 <!-- Chatbox Section -->
                 <div class="section chatbox">
                     <h4 class="header">Ask Questions</h4>
-                    <!-- <div class="legend">
-                        <img src="" height="160" alt="legend">
-                    </div> -->
                     <iframe src="chatbox.html"></iframe>
                 </div>
             </div>
+            
 
         </div>
     </div>
@@ -146,6 +144,7 @@
     document.getElementById("currentYear").textContent = new Date().getFullYear();
     </script>
 
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -161,6 +160,7 @@
             align-items: flex-start; /* Align items at the top */
             gap: 10px; /* Space between sections */
             padding: 0px;
+            /* margin:0px; */
             height: 80%; /* Ensure the container fills the height of the viewport */
             width: 100%; /* Ensure the container spans the full width of the viewport */
             box-sizing: border-box; /* Include padding in width calculations */
