@@ -23,5 +23,5 @@ pip install -r requirements.txt
 
 ### After running the notebook, check index.html to see the generated graph
 
-### Then start the Flaskk Server by running app.py
+### Then start the Flask Server by running app.py
 This code activates the flask server and connects the LLM to the web interface for chatting.
