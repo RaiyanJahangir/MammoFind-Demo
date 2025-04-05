@@ -50,18 +50,19 @@ pip install -r requirements.txt
 
 For Windows
 ```
-python Graph_Generator.ipynb
+jupyter nbconvert --to notebook --execute --inplace Graph_Generator.ipynb
+
 ```
 
 For Linux
 ```
-python3 Graph_Generator.ipynb
+jupyter nbconvert --to notebook --execute --inplace Graph_Generator.ipynb
 ```
 
 ### After running the notebook, check index.html to see the generated graph
 
 ### Then start the Flask Server by running app.py
-This code activates the flask server and connects the LLM to the web interface for chatting.
+This code activates the Flask server and connects the LLM to the web interface for chatting.
 
 For Windows
 ```
