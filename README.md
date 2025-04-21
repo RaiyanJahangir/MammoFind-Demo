@@ -3,9 +3,11 @@ An LLM-based Web Visualization tool for Mammogram dataset recommendations
 
 ## To run the code, follow the instructions below
 
-- You will need Python 3.11.7
+- Install [Git](https://git-scm.com/downloads) 
 
-- You will need Ollama installed in your pc and have some LLMs downloaded
+- Install [Python 3.11.7](https://www.python.org/downloads/release/python-3117/) 
+
+- Install [Ollama](https://ollama.com/) and pull some models you would like to use.
 
 ### Clone the git repository
 ```
@@ -14,7 +16,7 @@ git clone https://github.com/RaiyanJahangir/Mammo-Find.git
 
 ### Go to the root directory of the projects
 ```
-cd Mammo-Find
+cd MammoFind-Demo
 ```
 
 ### Create a virtual environment 
@@ -63,6 +65,7 @@ jupyter nbconvert --to notebook --execute --inplace Graph_Generator.ipynb
 
 ### Then start the Flask Server by running app.py
 This code activates the Flask server and connects the LLM to the web interface for chatting.
+Make sure you change the model name you would like to use in app.py
 
 For Windows
 ```
