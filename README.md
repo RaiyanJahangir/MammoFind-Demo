@@ -16,7 +16,7 @@ git clone https://github.com/RaiyanJahangir/Mammo-Find.git
 
 ### Go to the root directory of the projects
 ```
-cd MammoFind-Demo
+cd Mammo-Find
 ```
 
 ### Create a virtual environment 
